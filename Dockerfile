@@ -13,16 +13,9 @@ RUN npm run build
 
 FROM nginx:alpine3.20
 
-# Overwriting nginx config with our own config file
-RUN rm -rf /etc/nginx/conf.d/default.conf
-COPY ./default.conf /etc/nginx/conf.d/default.conf
-
-# Copy over the build created in the Step 1
-#COPY --from=builder /app/build /usr/share/nginx/html
-
-# Set the working directory
-#WORKDIR /usr/share/nginx/html
-COPY --from=build /app/build /usr/share/nginx/html
+COPY --from=build /app/build /usr/share/nginx/html 
+# Copy the Nginx configuration file 
+COPY nginx.conf /etc/nginx/conf.d/default.conf
 
 EXPOSE 80
 
