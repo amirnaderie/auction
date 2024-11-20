@@ -1,43 +1,36 @@
-# FROM node:18
-
-# WORKDIR /app
-# COPY package*.json ./
-# RUN npm install
-# COPY . .
-# EXPOSE 3000
-# CMD npm run dev
-
-# Use the official Node.js image as the base image
-# FROM node:18-alpinedocker
-FROM node:18.20.4-alpine
+# Stage 1: Build the React application
+FROM node:18.20.4-alpine AS build
 
 # Set the working directory
 WORKDIR /app
 
-# Copy package.json and package-lock.json
-COPY package*.json ./
+# Copy the package.json and package-lock.json
+COPY package.json package-lock.json ./
 
-# Install dependencies
+# Install the dependencies
 RUN npm install
-
-
-#RUN npm install -g prisma
 
 # Copy the rest of the application code
 COPY . .
 
-# Generate Prisma client
-#RUN npx prisma generate
-
-# # Build the Next.js application
+# Build the application
 RUN npm run build
 
-# Expose the port the app runs on
-EXPOSE 443
+# Stage 2: Serve the React application using Nginx
+FROM nginx:1.21
 
-# Start the application
-CMD ["npm", "start"]
-# CMD npm run dev
+# Copy the build output from the previous stage
+COPY --from=build /app/build /usr/share/nginx/html
+
+# Copy the Nginx configuration file
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+
+# Expose port 80
+EXPOSE 80
+
+# Start Nginx
+CMD ["nginx", "-g", "daemon off;"]
+
 
 #docker build -t auction:0.0.1 .
 #docker save auction > auction.0.0.1.tar
