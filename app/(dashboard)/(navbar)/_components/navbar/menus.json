@@ -1,4 +1,6 @@
 [
-  { "key": "/dashboard/auction", "label": "مناقصه" }
+  { "key": "/dashboard/auction", "label": "مزایده خودرو" },
+  { "key": "/dashboard/province", "label": "انتخاب استان" },
+  { "key": "/dashboard/contact", "label": "تماس با ما" }
    
 ]
