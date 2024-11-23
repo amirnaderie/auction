@@ -1,11 +1,11 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import cars from "./cars.json";
-import { CarType } from "@/app/types";
 import Image from "next/image";
 import MapPinSvg from "@/app/components/svg/mapPinSvg";
 import ClockSvg from "@/app/components/svg/clockSvg";
 import TagSvg from "@/app/components/svg/tagSvg";
+import { CarType } from "@/app/types";
 const Auction = () => {
   const [carsData, setCarsData] = useState<CarType[]>([]);
   const [imageIsLoading, setImageIsLoading] = useState<boolean>(true);
